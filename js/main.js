@@ -331,4 +331,3 @@ function initSessionMonitor() {
         if (geoEl) geoEl.innerText = 'LOOPBACK_TUNNEL // SECURE';
       });
   }
-}
