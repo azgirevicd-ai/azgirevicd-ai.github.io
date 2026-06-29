@@ -1,0 +1,699 @@
+/* Общие настройки */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #121212; /* Темно-серый фон */
+  font-family: 'Fira Sans Condensed', sans-serif;
+  color: #E0E0E0;      /* Светло-серый текст по умолчанию */
+  padding: 24px;
+  min-height: 100vh;
+}
+
+/* Шапка */
+header {
+  position: relative;
+  overflow: hidden;
+  padding: 40px 0; 
+  background: #121212;
+  /* Строчку border-bottom: 1px solid #2A3344; мы полностью удалили */
+}
+
+#neuro-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none; 
+  z-index: 1;
+}
+
+/* Контейнер-обёртка для текста шапки */
+.header-container {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;       /* Точно такая же ширина, как у .grid-container */
+  margin: 0 auto;          /* Центрируем сам контейнер на экране */
+  padding: 0px;         /* Боковые отступы равны padding у body (24px) */
+  text-align: left;        /* Строго по левому краю */
+}
+
+/* Стили заголовка */
+.matrix-title {
+  font-size: 38px;
+  letter-spacing: 3px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #E8EDF2;
+  display: inline-block;
+  animation: matrixGlow 8s infinite ease-in-out;
+  pointer-events: none;
+}
+
+header .subtitle {
+  margin-top: 6px;
+  color: #8899AA;
+  pointer-events: none;
+}
+
+/* Навигация */
+nav {
+  display: flex;
+  justify-content: center; 
+  flex-wrap: wrap;
+  gap: 12px 16px;              /* Чуть компактнее отступы для кнопок */
+  margin-top: 28px;
+  font-size: 14px;             /* Сделаем шрифт более строгим и аккуратным */
+  font-weight: 600;
+  font-family: monospace;      /* Настоящий хакерский моноширинный шрифт */
+  letter-spacing: 1px;
+  text-transform: uppercase;   /* Все буквы заглавные для строгости */
+}
+
+nav a {
+  pointer-events: auto; 
+  color: #C0C0C0;
+  text-decoration: none;
+  transition: all 0.25s ease;  /* Плавный переход всех эффектов */
+  
+  background: rgba(30, 30, 30, 0.75); 
+  backdrop-filter: blur(4px);  
+  /* Мягкая серая граница в тон карточкам */
+  border: 1px solid #2D2D2D;   
+  padding: 8px 16px;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); 
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;                     
+}
+
+/* Эффект при наведении (Ховер) */
+nav a:hover {
+  color: #00ff66;              /* Загорается матричным зеленым */
+  border-color: #00ff66;
+  background: rgba(0, 255, 102, 0.05);
+  box-shadow: 0 0 12px rgba(0, 255, 102, 0.2);
+}
+
+/* Состояние активной страницы (где пользователь находится сейчас) */
+nav a.active {
+  color: #F5C542;              /* Золотой маркер активной страницы */
+  border-color: #F5C542;
+  background: rgba(245, 197, 66, 0.03);
+  pointer-events: none;        /* Нельзя кликнуть на уже открытую страницу */
+}
+
+
+/* Сетка публикаций (главная) */
+.grid-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 24px;
+}
+
+/* ─── ИНТЕРАКТИВНАЯ КАРТОЧКА С КИБЕР-ЭФФЕКТАМИ ДЛЯ МЯГКОЙ ТЕМЫ ─── */
+.card {
+  position: relative;
+  /* Мягкий графитовый фон вместо старого тёмно-синего */
+  background: #1A1A1A; 
+  /* Более глухая серая рамка, которая не режет глаза */
+  border: 1px solid #2D2D2D; 
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  will-change: transform; 
+}
+
+/* Линия лазера (Ваша фишка) */
+.card::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #00ff66, transparent);
+  box-shadow: 0 0 8px #00ff66;
+  opacity: 0;
+  z-index: 2;
+}
+
+/* Бинарный шум в углу (Ваша фишка) */
+.card::after {
+  content: '101011 0110 001';
+  position: absolute;
+  bottom: -10px;
+  right: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: rgba(0, 255, 102, 0);
+  transition: color 0.3s ease, bottom 0.3s ease;
+  pointer-events: none;
+  letter-spacing: 2px;
+  width: 60px;
+  word-break: break-all;
+}
+
+/* Ховер состояние карточки */
+.card:hover {
+  border-color: #00ff66;
+  box-shadow: 0 0 20px rgba(0, 255, 102, 0.05); /* Чуть мягче тень, чтобы не пестрить */
+  transform: translateY(-4px); 
+}
+
+/* Запуск лазера на вашей комфортной скорости (3 секунды) */
+.card:hover::before {
+  opacity: 1;
+  animation: cyberScan 3s linear infinite;
+}
+
+/* Проявление шума */
+.card:hover::after {
+  color: rgba(0, 255, 102, 0.12);
+  bottom: 8px;
+}
+
+/* Стили иконки (Внутренний квадрат) */
+.card .thumbnail {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  /* Более глубокий серый цвет подложки иконки */
+  background: #242424; 
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  color: #F5C542;
+  margin-bottom: 12px;
+  transition: color 0.25s ease;
+}
+
+/* Глитч иконки при наведении (Ваша фишка) */
+.card:hover .thumbnail {
+  color: #00ff66;
+  text-shadow: 0 0 10px rgba(0,255,102,0.5);
+  animation: iconGlitch 0.4s linear forwards; 
+}
+
+/* Текст заголовка постов внутри карточки */
+.card .title {
+  font-size: 15px;
+  font-weight: 500;
+  /* Мягкий светло-серый цвет текста в тон вашей новой палитре */
+  color: #b1b1b1; 
+  line-height: 1.3;
+}
+
+/* Дата публикации */
+.card .date {
+  font-size: 12px;
+  /* Мягкий серый цвет для даты */
+  color: #777777; 
+  margin-top: 6px;
+}
+
+/* Блок мета-данных (категории и точка) */
+.card-meta-top {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 0 4px;
+}
+
+.card-category {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  /* Приглушенный технический префикс // */
+  color: #777777; 
+  letter-spacing: 0.5px;
+}
+
+.card-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Оповещение о пустой базе */
+.system-alert {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-family: monospace;
+  color: #667788;
+  padding: 40px;
+}
+/* ─── Анимации для эффектов ─── */
+@keyframes cyberScan {
+  0% { top: -5%; }
+  50% { top: 105%; }
+  100% { top: -5%; }
+}
+
+@keyframes iconGlitch {
+  0% { transform: translate(0, 0); }
+  15% { transform: translate(-2px, 1px) scale(1.03); }
+  30% { transform: translate(1px, -1px) scale(0.97); }
+  45% { transform: translate(-1px, -2px) scale(1.01); }
+  60% { transform: translate(2px, 1px) scale(0.99); }
+  85% { transform: translate(-1px, 0px) scale(1); }
+  100% { transform: translate(0, 0); }
+}
+
+
+/* Страницы-заглушки (для категорий) */
+.page-placeholder {
+  max-width: 1200px;
+  margin: 40px auto;
+  text-align: center;
+  color: #8899AA;
+  font-size: 18px;
+  padding: 60px 20px;
+  border: 1px dashed #2A3344;
+  border-radius: 16px;
+}
+
+.page-placeholder h2 {
+  color: #E8EDF2;
+  font-size: 28px;
+  margin-bottom: 12px;
+}
+
+
+/* Футер */
+footer {
+  max-width: 1200px;
+  margin: 60px auto 20px;
+  text-align: center;
+  font-size: 13px;
+  color: #2D2D2D;
+  border-top: 1px solid #2D2D2D;
+  padding-top: 20px;
+}
+
+/* Адаптив */
+@media (max-width: 768px) {
+  .matrix-title {
+    font-size: 32px;
+  }
+  nav {
+    gap: 12px 20px;
+    font-size: 14px;
+  }
+  .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 16px;
+  }
+  .card .title {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .matrix-title {
+    font-size: 26px;
+  }
+  nav {
+    gap: 10px 16px;
+    font-size: 13px;
+  }
+  .grid-container {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+}
+/* Стиль для страницы публикации */
+/* Светлая подложка статьи в стиле официального документа */
+/* ─── ВОЗВРАЩАЕМ МАГИЮ ТЕМНОГО СТИЛЯ (МАТОВЫЙ АРХИВ) ─── */
+.post-content {
+  max-width: 1200px;  
+  width: 100%;
+  margin: 40px auto;
+  padding: 40px;
+  position: relative;
+  /* Возвращаем ваш потрясающий мягкий тёмно-серый фон */
+  background: #1A1A1A; 
+  border: 3px solid #1a1a1a;           /* внутренний тёмный бортик */
+  border-radius: 18px;                 /* чуть более округлый, как кинескоп */
+  
+  /* ИЗМЕНЕНО: Кристально-чистый, слегка тёплый цвет текста для идеального контраста */
+  color: #99ffaa;      
+  
+  /* ИЗМЕНЕНО: Переводим весь текст на идеальный геометрический JetBrains Mono */
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 17px;        /* Компактный хакерский размер, который не мылится */
+  font-weight: 400;       /* Оптимальная плотность: буквы больше не кажутся тонкими */
+  line-height: 1.75;      /* Простор между строками */
+  letter-spacing: 0.1px;  /* Развиваем буквы вширь, чтобы они не сливались */
+  box-sizing: border-box;
+  
+  /* Намертво выжигаем любое мыло и тени */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  text-shadow: 
+  0 0 2px rgba(0, 0, 0, 0.7),
+  0 0 5px rgba(153, 255, 170, 0.25);
+}
+
+/* Исправляем название страницы (Тест модели Qwen) — теперь оно ярко-серебряное и контрастное */
+.research-meta-left h2 {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 700;
+  font-size: 22px;
+  color: #99ffaa !important;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+/* ИЗМЕНЕНО: Заголовки разделов [ МЕТОДОЛОГИЯ СКАНИРОВАНИЯ ] */
+.post-content h3 {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 700;
+  font-size: 14px;        
+  /* Меняем токсично-зеленый на благородный приглушенный золотисто-желтый */
+  color: #e7ca7a;         
+  margin-top: 36px;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+/* Важные выделения в тексте (Strong) */
+.post-content strong {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 700;
+  color: #e7ca7a; /* Мягкий пастельно-синий */
+}
+
+/* Сетка технических спецификаций */
+.spec-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  background: #131a244d;
+  border: 1px solid #2A3344;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 28px;
+  font-family: monospace;
+  font-size: 13px;
+}
+
+/* Системные логи и блоки кода */
+.post-content pre {
+  background: #0b0e1475; /* Угольно-черный бокс терминала внутри серого листа */
+  border: 1px solid #222630;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 20px 0;
+}
+
+
+.post-content pre code {
+  font-family: 'JetBrains Mono', monospace; 
+  font-weight: 400;
+  color: #99ffaa; /* Зелёный код матрицы внутри терминала */
+  font-size: 15px;        
+  line-height: 1.5;
+}
+
+/* Инлайн-код внутри обычных абзацев */
+.post-content :not(pre) > code {
+  background: #242424;    
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #F5C542;         
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Кнопка "Назад" в стиле пагинации, отцентрированная */
+.post-content .back-link {
+  /* Идентично .cyber-page-btn */
+  background: rgba(30, 30, 30, 0.75);
+  backdrop-filter: blur(4px);
+  border: 1px solid #2D2D2D;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  color: #C0C0C0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 8px 20px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.25s ease;
+
+  /* Делаем блочным flex-контейнером и центрируем */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  margin: 20px auto 40px;   /* авто-отступы по бокам = центр */
+}
+
+/* Ховер как у пагинации и навигации */
+.post-content .back-link:hover {
+  color: #00ff66;
+  border-color: #00ff66;
+  background: rgba(0, 255, 102, 0.05);
+  box-shadow: 0 0 12px rgba(0, 255, 102, 0.2);
+}
+
+/* Ключевые кадры для анимации мерцания заголовка */
+@keyframes matrixGlow {
+  0%, 100% {
+    color: #E8EDF2;
+    text-shadow: 0 0 10px rgba(168, 199, 255, 0.2);
+  }
+  25% {
+    color: #00ff66; /* Неоновый зеленый из Матрицы */
+    text-shadow: 0 0 15px rgba(0, 255, 102, 0.8), 0 0 30px rgba(0, 255, 102, 0.4);
+  }
+  45% {
+    color: #00aa44; /* Более глубокий зеленый */
+    text-shadow: 0 0 8px rgba(0, 255, 102, 0.5);
+  }
+  70% {
+    color: #F5C542; /* Вспышка золотистого */
+    text-shadow: 0 0 12px rgba(245, 197, 66, 0.6);
+  }
+  90% {
+    color: #00ff66; /* Снова зеленый */
+    text-shadow: 0 0 20px rgba(0, 255, 102, 0.9);
+  }
+}
+/* ─── Кнопки пагинации в стиле навигации ─── */
+.cyber-page-btn {
+  /* Общие с навигацией свойства */
+  background: rgba(30, 30, 30, 0.75);
+  backdrop-filter: blur(4px);
+  border: 1px solid #2D2D2D;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  color: #C0C0C0;
+  font-family: 'JetBrains Mono', monospace;  /* единый шрифт с навигацией */
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 8px 20px;           /* чуть компактнее, как у nav a */
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: uppercase;
+}
+
+/* Ховер — точь-в-точь как у nav a:hover */
+.cyber-page-btn:hover:not(:disabled) {
+  color: #00ff66;
+  border-color: #00ff66;
+  background: rgba(0, 255, 102, 0.05);
+  box-shadow: 0 0 12px rgba(0, 255, 102, 0.2);
+}
+
+/* Заблокированная кнопка: приглушаем до цвета индикатора, убираем курсор */
+.cyber-page-btn:disabled {
+  color: #667788;
+  border-color: #2D2D2D;
+  background: rgba(30, 30, 30, 0.5);
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Индикатор текущей страницы — ненавязчивый текст */
+.cyber-page-indicator {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: #667788;
+  margin: 0 16px;
+  letter-spacing: 0.5px;
+  user-select: none;
+}
+
+.post-date {
+  font-family: monospace;
+  font-size: 12px;
+  color: #667788;
+}
+
+.spec-item {
+  color: #A8C7FF;
+}
+.spec-item strong {
+  color: #667788;
+}
+
+/* ─── ИЗОЛИРОВАННЫЙ БЛОК ТЕМЫ В СТИЛЕ КАТЕГОРИЙ ─── */
+.post-main-container {
+  max-width: 1250px !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+  padding: 0 24px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important; /* Центрируем всё строго по одной оси */
+}
+
+.post-title-card {
+  display: block !important;
+  position: relative !important;
+  z-index: 5 !important; /* Вытаскиваем строго поверх фонового холста */
+  width: 100% !important;
+  
+  /* Матовая графитовая подложка — точная копия кнопок навигации */
+  background: rgba(30, 30, 30, 0.95) !important; 
+  border: 1px solid #2D2D2D !important;
+  border-radius: 12px !important;
+  padding: 24px !important;
+  margin-top: 0px !important;
+  text-align: center !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Золотой заголовок H2 внутри карточки темы */
+.post-title-card h2 {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-weight: 700 !important;
+  font-size: 20px !important;
+  color: #99ffaa !important; /* Наше фирменное золото */
+  letter-spacing: 0.5px !important;
+  margin-bottom: 8px !important;
+  text-shadow: none !important;
+}
+/* ─── ДИНАМИЧЕСКАЯ СОЕДИНИТЕЛЬНАЯ ЛИНИЯ ─── */
+.connection-line-path {
+  fill: none;
+  stroke-width: 2;
+  stroke-dasharray: var(--path-length);    /* берём длину из JS */
+  stroke-dashoffset: var(--path-length);
+  filter: drop-shadow(0 0 6px var(--glow-color));
+  animation: drawLine 1s ease-out forwards, 
+             linePulse 2s 1s infinite ease-in-out;
+}
+
+/* ─── ДИНАМИЧЕСКАЯ СОЕДИНИТЕЛЬНАЯ ЛИНИЯ ─── */
+.connection-line-bg {
+  fill: none;
+  stroke-width: 2;
+  filter: drop-shadow(0 0 4px var(--glow-color));
+  opacity: 0.4;
+}
+
+.connection-line-scan {
+  fill: none;
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 8px var(--glow-color));
+  stroke-dasharray: 50% 50%;          /* длина яркого пятна */
+  animation: cyberScanLine 2.5s linear infinite;
+}
+
+.connection-pulse-dot {
+  opacity: 0;
+  filter: drop-shadow(0 0 6px var(--glow-color));
+  animation: dotAppear 0.1s 0.9s ease-out forwards,
+             dotPulse 1.5s 1s infinite ease-in-out;
+}
+
+@keyframes drawLine {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes dotAppear {
+  to { opacity: 1; }
+}
+
+@keyframes linePulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+@keyframes dotPulse {
+  0%, 100% { r: 3; opacity: 0.4; }
+  50% { r: 6; opacity: 1; }
+}
+
+@keyframes cyberScanLine {
+  0% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -100%; }
+}
+/* Сканирующий луч поверх линии */
+.connection-line-scan {
+  fill: none;
+  stroke-width: 3;
+  stroke-dasharray: 30% 70%;          /* длина яркого пятна */
+  animation: cyberScanLine 2.5s linear infinite;
+  filter: drop-shadow(0 0 8px var(--glow-color));
+}
+
+@keyframes cyberScanLine {
+  0% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -100%; }
+}
+
+main {
+  animation: pageFadeIn 0.4s ease-out both;
+}
+
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Начальное скрытие всех прямых детей .post-content (эффект построчной печати) */
+.post-content > * {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Элемент становится видимым, когда JS добавит этот класс */
+.post-content > *.reveal-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
