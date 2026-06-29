@@ -308,7 +308,7 @@ function initSessionMonitor() {
 
   // 2. IP + Страна (CORS-безопасный вариант)
   if (ipEl || geoEl) {
-  fetch('https://api.ip.sb/geoip')
+  fetch('https://api.country.is/')
     .then(response => {
       if (!response.ok) throw new Error('GEO_FAIL');
       return response.json();
@@ -316,7 +316,7 @@ function initSessionMonitor() {
     .then(data => {
       if (ipEl) ipEl.innerText = (data.ip || '???') + ' // TARGET';
       if (geoEl) {
-        const country = (data.country_code || 'UN').toUpperCase();
+        const country = (data.country || 'UN').toUpperCase();
         geoEl.innerText = `GEO: ${country} // DETECTED`;
         geoEl.style.color = '#00ff66';
       }
