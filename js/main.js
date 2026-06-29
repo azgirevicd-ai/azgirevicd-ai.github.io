@@ -308,29 +308,24 @@ function initSessionMonitor() {
 
   // 2. IP + Страна (CORS-безопасный вариант)
   if (ipEl || geoEl) {
-    fetch('https://api.ipify.org?format=json')
-      .then(res => res.json())
-      .then(ipData => {
-        if (ipEl) ipEl.innerText = (ipData.ip || '???') + ' // TARGET';
-        return fetch(`https://api.country.is/${ipData.ip}`);
-      })
-      .then(res => {
-        if (!res.ok) throw new Error('GEO_FAIL');
-        return res.json();
-      })
-      .then(geoData => {
-        if (geoEl) {
-          const country = (geoData.country && geoData.country.toUpperCase()) || 'UN';
-          geoEl.innerText = `GEO: ${country} // DETECTED`;
-          geoEl.style.color = '#00ff66';
-        }
-      })
-      .catch(error => {
-        console.warn('Сетевой мониторинг: локальный режим', error);
-        if (ipEl) ipEl.innerText = '127.0.0.1 // LOCALHOST';
-        if (geoEl) geoEl.innerText = 'LOOPBACK_TUNNEL // SECURE';
-      });
-  }
+  fetch('https://api.ip.sb/geoip')
+    .then(response => {
+      if (!response.ok) throw new Error('GEO_FAIL');
+      return response.json();
+    })
+    .then(data => {
+      if (ipEl) ipEl.innerText = (data.ip || '???') + ' // TARGET';
+      if (geoEl) {
+        const country = (data.country_code || 'UN').toUpperCase();
+        geoEl.innerText = `GEO: ${country} // DETECTED`;
+        geoEl.style.color = '#00ff66';
+      }
+    })
+    .catch(error => {
+      console.warn('Сетевой мониторинг: локальный режим', error);
+      if (ipEl) ipEl.innerText = '127.0.0.1 // LOCALHOST';
+      if (geoEl) geoEl.innerText = 'LOOPBACK_TUNNEL // SECURE';
+    });
 }
 
 // ─── ЕДИНЫЙ ЦЕНТР ЗАПУСКА ВСЕХ СКРИПТОВ НА САЙТЕ ───
