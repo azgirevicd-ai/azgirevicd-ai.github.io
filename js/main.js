@@ -307,7 +307,7 @@ function initSessionMonitor() {
   }
 
   // 2. IP + Страна (CORS-безопасный вариант)
-  if (ipEl || geoEl) {
+if (ipEl || geoEl) {
   fetch('https://api.country.is/')
     .then(response => {
       if (!response.ok) throw new Error('GEO_FAIL');
