@@ -1,0 +1,110 @@
+[
+  {
+    "id": 1,
+    "title": "[RED_TEAM] Обход контекстных фильтров безопасности в LLM моделях через Prompt Injection",
+    "date": "7 июн 2026",
+    "category": "SECURITY",
+    "status": "COMPLETED",
+    "icon": "⚡",
+    "url": "post-1.html"
+  },
+  {
+    "id": 2,
+    "title": "[PYTHON] Пишем асинхронный сканер открытых портов на Python с сохранением логов в SQLite",
+    "date": "6 июн 2026",
+    "category": "ENGINEERING",
+    "status": "ACTIVE",
+    "icon": "🐍",
+    "url": "post-2.html"
+  },
+  {
+    "id": 3,
+    "title": "[BLUE_TEAM] Развертывание интерактивной ловушки (HoneyPot) для фиксации атак на базу данных",
+    "date": "5 июн 2026",
+    "category": "EXPERIMENTS",
+    "status": "STABLE",
+    "icon": "🛡️",
+    "url": "post-3.html"
+  },
+  {
+    "id": 4,
+    "title": "[CONCEPT] Как ИИ изменит автоматический поиск уязвимостей: анализ угроз нулевого дня",
+    "date": "4 июн 2026",
+    "category": "IDEAS",
+    "status": "STABLE",
+    "icon": "💡",
+    "url": "post-4.html"
+  },
+    {
+    "id": 5,
+    "title": "[RED_TEAM] Обход контекстных фильтров безопасности в LLM моделях через Prompt Injection",
+    "date": "3 июн 2026",
+    "category": "SECURITY",
+    "status": "COMPLETED",
+    "icon": "⚡",
+    "url": "post-1.html"
+  },
+  {
+    "id": 6,
+    "title": "[PYTHON] Пишем асинхронный сканер открытых портов на Python с сохранением логов в SQLite",
+    "date": "2 июн 2026",
+    "category": "ENGINEERING",
+    "status": "ACTIVE",
+    "icon": "🐍",
+    "url": "post-2.html"
+  },
+  {
+    "id": 7,
+    "title": "[BLUE_TEAM] Развертывание интерактивной ловушки (HoneyPot) для фиксации атак на базу данных",
+    "date": "1 июн 2026",
+    "category": "EXPERIMENTS",
+    "status": "STABLE",
+    "icon": "🛡️",
+    "url": "post-3.html"
+  },
+  {
+    "id": 8,
+    "title": "[CONCEPT] Как ИИ изменит автоматический поиск уязвимостей: анализ угроз нулевого дня",
+    "date": "3 июн 2026",
+    "category": "IDEAS",
+    "status": "STABLE",
+    "icon": "💡",
+    "url": "post-4.html"
+  },
+    {
+    "id": 9,
+    "title": "[RED_TEAM] Обход контекстных фильтров безопасности в LLM моделях через Prompt Injection",
+    "date": "6 июн 2026",
+    "category": "SECURITY",
+    "status": "COMPLETED",
+    "icon": "⚡",
+    "url": "post-1.html"
+  },
+  {
+    "id": 10,
+    "title": "[PYTHON] Пишем асинхронный сканер открытых портов на Python с сохранением логов в SQLite",
+    "date": "21 июн 2026",
+    "category": "ENGINEERING",
+    "status": "ACTIVE",
+    "icon": "🐍",
+    "url": "post-2.html"
+  },
+  {
+    "id": 11,
+    "title": "[BLUE_TEAM] Развертывание интерактивной ловушки (HoneyPot) для фиксации атак на базу данных",
+    "date": "12 июн 2026",
+    "category": "EXPERIMENTS",
+    "status": "STABLE",
+    "icon": "🛡️",
+    "url": "post-3.html"
+  },
+  {
+    "id": 12,
+    "title": "[CONCEPT] Как ИИ изменит автоматический поиск уязвимостей: анализ угроз нулевого дня",
+    "date": "14 июн 2026",
+    "category": "IDEAS",
+    "status": "STABLE",
+    "icon": "💡",
+    "url": "post-4.html"
+  }
+]
