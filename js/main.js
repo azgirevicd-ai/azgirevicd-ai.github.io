@@ -287,6 +287,7 @@ document.addEventListener('DOMContentLoaded', revealPostContent);
 
 // ─── СИСТЕМА МОНИТОРИНГА: ЧАСЫ, ДАТА, IP И ГЕОЛОКАЦИЯ ───
 function initSessionMonitor() {
+  console.log('Монитор запущен. Элементы:', { clockEl, dateEl, ipEl, geoEl });
   const clockEl = document.getElementById('live-clock');
   const dateEl = document.getElementById('live-date');
   const ipEl = document.getElementById('user-ip');
