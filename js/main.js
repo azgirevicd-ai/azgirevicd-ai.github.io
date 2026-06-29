@@ -292,12 +292,12 @@ function initSessionMonitor() {
   const ipEl = document.getElementById('user-ip');
   const geoEl = document.getElementById('user-geo');
 
-  // 1. Часы и Дата (Ежесекундный тик)
+  // 1. Часы и Дата (ежесекундный тик)
   if (clockEl && dateEl) {
     const updateTime = () => {
       const now = new Date();
       clockEl.innerText = now.toLocaleTimeString('ru-RU') + ' // LIVE';
-      
+
       const dateStr = now.toLocaleDateString('en-US', {
         day: '2-digit',
         month: 'short',
@@ -305,32 +305,29 @@ function initSessionMonitor() {
       }).toUpperCase().replace(',', '');
       dateEl.innerText = dateStr + ' // SECURE';
     };
-    
+
     updateTime();
     setInterval(updateTime, 1000);
   }
 
-  // 2. Сетевой сканер (IP + Город) за один безопасный запрос
+  // 2. Сетевой сканер (IP + Город) — исправленный URL
   if (ipEl || geoEl) {
-    fetch('https://ipapi.co')
+    fetch('https://ipapi.co/json/')   // ← главное исправление
       .then(response => {
         if (!response.ok) throw new Error('OFFLINE');
         return response.json();
       })
       .then(data => {
-        // Выводим IP-адрес
-        if (ipEl) ipEl.innerText = data.ip + ' // TARGET';
-        
-        // Выводим Город и Код Страны (например: Minsk, BY)
+        if (ipEl) ipEl.innerText = (data.ip || '???') + ' // TARGET';
         if (geoEl) {
           const city = data.city || 'UNKNOWN_CITY';
           const country = data.country_code || 'UN';
           geoEl.innerText = `${city}, ${country} // DETECTED`;
-          geoEl.style.color = '#00ff66'; // Подсвечиваем зеленым при успешном сканировании
+          geoEl.style.color = '#00ff66';
         }
       })
       .catch(error => {
-        console.warn('Сетевой мониторинг переведен в локальный режим:', error);
+        console.warn('Сетевой мониторинг переведён в локальный режим:', error);
         if (ipEl) ipEl.innerText = '127.0.0.1 // LOCALHOST';
         if (geoEl) geoEl.innerText = 'LOOPBACK_TUNNEL // SECURE';
       });
