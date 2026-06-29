@@ -310,34 +310,30 @@ function initSessionMonitor() {
     setInterval(updateTime, 1000);
   }
 
-  // 2. Сетевой сканер (IP + Город) — исправленный URL
-  if (ipEl || geoEl) {
-    fetch('https://ipapi.co/json/')   // ← главное исправление
-      .then(response => {
-        if (!response.ok) throw new Error('OFFLINE');
-        return response.json();
-      })
-      .then(data => {
-        if (ipEl) ipEl.innerText = (data.ip || '???') + ' // TARGET';
-        if (geoEl) {
-          const city = data.city || 'UNKNOWN_CITY';
-          const country = data.country_code || 'UN';
-          geoEl.innerText = `${city}, ${country} // DETECTED`;
-          geoEl.style.color = '#00ff66';
-        }
-      })
-      .catch(error => {
-        console.warn('Сетевой мониторинг переведён в локальный режим:', error);
-        if (ipEl) ipEl.innerText = '127.0.0.1 // LOCALHOST';
-        if (geoEl) geoEl.innerText = 'LOOPBACK_TUNNEL // SECURE';
-      });
-  }
-}
+// 2. Сетевой сканер (IP + Город) — CORS-безопасный вариант
+if (ipEl || geoEl) {
+  fetch('https://api.ipify.org?format=json')
+    .then(res => res.json())
+    .then(ipData => {
+      if (ipEl) ipEl.innerText = (ipData.ip || '???') + ' // TARGET';
 
-// ─── ЕДИНЫЙ ЦЕНТР ЗАПУСКА ВСЕХ СКРИПТОВ НА САЙТЕ ───
-document.addEventListener('DOMContentLoaded', () => {
-  if (typeof initializeApp === 'function') {
-    initializeApp();
-  }
-  initSessionMonitor();
-});
+      // Запрос к country.is для гео по IP
+      return fetch(`https://api.country.is/${ipData.ip}`);
+    })
+    .then(res => {
+      if (!res.ok) throw new Error('GEO_FAIL');
+      return res.json();
+    })
+    .then(geoData => {
+      if (geoEl) {
+        const country = (geoData.country && geoData.country.toUpperCase()) || 'UN';
+        geoEl.innerText = `GEO: ${country} // DETECTED`;
+        geoEl.style.color = '#00ff66';
+      }
+    })
+    .catch(error => {
+      console.warn('Сетевой мониторинг: локальный режим', error);
+      if (ipEl) ipEl.innerText = '127.0.0.1 // LOCALHOST';
+      if (geoEl) geoEl.innerText = 'LOOPBACK_TUNNEL // SECURE';
+    });
+}
