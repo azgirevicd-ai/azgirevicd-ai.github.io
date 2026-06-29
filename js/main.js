@@ -292,48 +292,43 @@ function initSessionMonitor() {
   const ipEl = document.getElementById('user-ip');
   const geoEl = document.getElementById('user-geo');
 
-  // 1. Часы и Дата (ежесекундный тик)
+  // 1. Часы и Дата
   if (clockEl && dateEl) {
     const updateTime = () => {
       const now = new Date();
       clockEl.innerText = now.toLocaleTimeString('ru-RU') + ' // LIVE';
-
       const dateStr = now.toLocaleDateString('en-US', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric'
+        day: '2-digit', month: 'short', year: 'numeric'
       }).toUpperCase().replace(',', '');
       dateEl.innerText = dateStr + ' // SECURE';
     };
-
     updateTime();
     setInterval(updateTime, 1000);
   }
 
-// 2. Сетевой сканер (IP + Город) — CORS-безопасный вариант
-if (ipEl || geoEl) {
-  fetch('https://api.ipify.org?format=json')
-    .then(res => res.json())
-    .then(ipData => {
-      if (ipEl) ipEl.innerText = (ipData.ip || '???') + ' // TARGET';
-
-      // Запрос к country.is для гео по IP
-      return fetch(`https://api.country.is/${ipData.ip}`);
-    })
-    .then(res => {
-      if (!res.ok) throw new Error('GEO_FAIL');
-      return res.json();
-    })
-    .then(geoData => {
-      if (geoEl) {
-        const country = (geoData.country && geoData.country.toUpperCase()) || 'UN';
-        geoEl.innerText = `GEO: ${country} // DETECTED`;
-        geoEl.style.color = '#00ff66';
-      }
-    })
-    .catch(error => {
-      console.warn('Сетевой мониторинг: локальный режим', error);
-      if (ipEl) ipEl.innerText = '127.0.0.1 // LOCALHOST';
-      if (geoEl) geoEl.innerText = 'LOOPBACK_TUNNEL // SECURE';
-    });
+  // 2. IP + Страна (CORS-безопасный вариант)
+  if (ipEl || geoEl) {
+    fetch('https://api.ipify.org?format=json')
+      .then(res => res.json())
+      .then(ipData => {
+        if (ipEl) ipEl.innerText = (ipData.ip || '???') + ' // TARGET';
+        return fetch(`https://api.country.is/${ipData.ip}`);
+      })
+      .then(res => {
+        if (!res.ok) throw new Error('GEO_FAIL');
+        return res.json();
+      })
+      .then(geoData => {
+        if (geoEl) {
+          const country = (geoData.country && geoData.country.toUpperCase()) || 'UN';
+          geoEl.innerText = `GEO: ${country} // DETECTED`;
+          geoEl.style.color = '#00ff66';
+        }
+      })
+      .catch(error => {
+        console.warn('Сетевой мониторинг: локальный режим', error);
+        if (ipEl) ipEl.innerText = '127.0.0.1 // LOCALHOST';
+        if (geoEl) geoEl.innerText = 'LOOPBACK_TUNNEL // SECURE';
+      });
+  }
 }
